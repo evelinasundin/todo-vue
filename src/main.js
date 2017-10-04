@@ -14,21 +14,29 @@ import Vue from 'vue'
 //   components: { App }
 // })
 
+const STORAGE_KEY = 'todo-storage'
+
 new Vue({
   el: '.todoapp',
   data () {
     return {
       newTodo: '',
-      todos: [{id: 0, title: 'New Todo', completed: 'false'}]
+      todos: []
     }
+  },
+  // vue js life cycle hook, method thats initiated everytime vue is booted up
+  created () {
+    this.todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
   },
   methods: {
     addTodo () {
       this.todos.push({title: this.newTodo, completed: 'false', id: this.todos.length})
       this.newTodo = ''
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos))
     },
     removeTodo (todo) {
       this.todos.splice(this.todos.indexOf(todo), 1)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos))
     }
   }
 })
