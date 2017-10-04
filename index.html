@@ -16,13 +16,19 @@
     </header>
     <section class="main">
       <ul class="todo-list">
+        <!-- loops through all the items in todos -->
         <li v-for="todo in todos"
-        class="todo">
+        :class="{editing: todo == editedTodo}">
         <div class="view">
           <input class="toggle" type="checkbox" v-model="todo.completed" />
-          <label> {{ todo.title }} </label>
+          <label @dblclick="editTodo(todo)"> {{ todo.title }} </label>
           <button class="destroy" v-on:click="removeTodo(todo)"></button>
         </div>
+         <!-- @ instead of v-on when someone edits input when they clock out or press enter done edit is set -->
+        <input class="edit" type="text"
+        v-model="todo.title"
+        @blur="doneEdit(todo)"
+        @keyup.enter="doneEdit(todo)" />
         </li>
       </ul>
       <input class="toggle-all" id="toggle-all" type="checkbox">

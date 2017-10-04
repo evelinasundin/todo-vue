@@ -1,6 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import './main.css'
 // import App from './App'
 // import router from './router'
 
@@ -21,7 +22,8 @@ new Vue({
   data () {
     return {
       newTodo: '',
-      todos: []
+      todos: [],
+      editedTodo: null
     }
   },
   // vue js life cycle hook, method thats initiated everytime vue is booted up
@@ -36,6 +38,20 @@ new Vue({
     },
     removeTodo (todo) {
       this.todos.splice(this.todos.indexOf(todo), 1)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos))
+    },
+    editTodo (todo) {
+      this.editedTodo = todo
+    },
+    doneEdit (todo) {
+      if (!this.editedTodo) {
+        return
+      }
+      this.editedTodo = null
+      todo.title = todo.title.trim()
+      if (!todo.title) {
+        this.removeTodo(todo)
+      }
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos))
     }
   }
